@@ -39,12 +39,14 @@ var OPTIONS_SCHEMA = {
   properties: {
     api_user: {
       type: 'string',
-      required: true,
       default: ''
     },
     api_password: {
       type: 'string',
-      required: true,
+      default: ''
+    },
+    api_key: {
+      type: 'string',
       default: ''
     }
   }
@@ -95,7 +97,12 @@ Plugin.prototype.onConfig = function(device){
 Plugin.prototype.setOptions = function(options){
   var self = this;
   self.options = options;
-  sendgrid = require('sendgrid')(self.options.api_user, self.options.api_password);
+  if(options.api_key !== ''){
+    sendgrid = require('sendgrid')(self.options.api_key);
+  }else{
+    sendgrid = require('sendgrid')(self.options.api_user, self.options.api_password);
+  }
+
 
 };
 
